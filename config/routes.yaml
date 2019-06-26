@@ -16,6 +16,11 @@ app_download:
       controller: App\Controller\APIController::pdf
       methods : ['GET']
 
+app_api_meteo:
+      path: /api/meteo
+      controller: App\Controller\APIController::meteo
+      methods : ['GET']
+
 app_produits:
       path: /produits/{slug}
       controller: App\Controller\ProductController::show
