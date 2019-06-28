@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -39,12 +40,12 @@ class Product
     private $nbViews;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $createAt;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $updateAt;
 
@@ -69,15 +70,48 @@ class Product
      */
     private $categorie;
 
+    /**
+     * @ORM\Column(type="string", length=128, unique=true)
+     */
+    private $slug;
+
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+
+
+        $this->nbViews = 0;
+        $this->createdAt = new \DateTime();
+
+
+
+
     }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+
+    public function updateSlug():self
+    {
+        //On recupere le slugger
+
+
+        $slugify = new Slugify();
+
+        // on utilise le slugger
+        // sur le name
+        //  pour mettre à jour le slug
+        $this->slug = $slugify->slugify($this->name);
+
+        // pour  le chainage
+        return $this;
+
+
+    }
+
 
     public function getName(): ?string
     {
@@ -87,7 +121,7 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
-
+        $this->updateSlug();
         return $this;
     }
 
@@ -209,6 +243,18 @@ class Product
     public function setCategorie(?Category $categorie): self
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
 
         return $this;
     }
