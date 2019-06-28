@@ -62,8 +62,10 @@ class ProductController extends AbstractController
            ->getRepository(Product::class);
        // Récupérations du produit lié au slug de l'url
        $product = $repository->findOneBy([
-           // $slug est la propriété de l'Entité que kl'on recupere dans 'slug'
-           // 'slug' est l'argument que l'on met dans l'url : voir routes.yaml
+           //  'slug' est la propriété de l'Entité Product que l'on recupere :idem $this-> slug
+           //  A 'slug' on attribue la valeur de la variable $slug : cette variable est l'argument de la fonction show()
+           // cet argument correspond au slug qu'on ahoute dans l'url
+           // findOneBy([ 'slug' => $slug  ]);  -> SELECT l'objet de la Class Product où sa propiété 'slug'  == argument passé dans l'url
            'slug' => $slug
            ]);
 
@@ -94,7 +96,10 @@ class ProductController extends AbstractController
         //dump($requestHTTP->request);
 
 
-        //Récuperation d'une Catégorie
+        //Récuperation d'une Catégorie rentrée en BDD
+        // on recupere dans la variable  $caregory une categorie de la BDD
+        // la methode  find() prend toujours en parametre un id
+        // on recupere donc la Categorie en BDD qui a l'id 1
         $category = $this->getDoctrine()
                                ->getRepository(Category::class)
                                ->find(1);
@@ -109,6 +114,7 @@ class ProductController extends AbstractController
             ->setImageName('chaise-longue.jpg')
             ->setIsPublished(true)
             ->setPrice(55.99)
+            // on recupere la categorie SELECT au-dessus
             ->setCategorie($category);
 
         dump($product);

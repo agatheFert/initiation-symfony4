@@ -97,8 +97,6 @@ class Product
     public function updateSlug():self
     {
         //On recupere le slugger
-
-
         $slugify = new Slugify();
 
         // on utilise le slugger
@@ -121,6 +119,8 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
+        // Des que le nom de l'objet est rentré
+        // On appelle la fonction updateSlug() sur l'objet : ce qui crée le slug d'apres le nom
         $this->updateSlug();
         return $this;
     }
