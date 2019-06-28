@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Form\ProductType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -90,7 +91,7 @@ class ProductController extends AbstractController
 
 
 
-    public function create(Request $requestHTTP): Response
+    public function oldcreate(Request $requestHTTP): Response
     {
         // Recuperation des POSTS
         //dump($requestHTTP->request);
@@ -133,6 +134,52 @@ class ProductController extends AbstractController
     }
 
 
+    /**
+     * @param Request $requestHTTP
+     * @return Response
+     */
+    public function create(Request $requestHTTP): Response
+    {
+        // Recuperation du Formulaire
+        $product = new Product();
+        $formProduct = $this->createForm(ProductType::class, $product);
+
+
+
+        // on envoie les données postées au formulaire
+        $formProduct->handleRequest($requestHTTP);
+
+
+        // On vérifie que le formulaire est soumis et valide
+        if($formProduct->isSubmitted() && $formProduct->isValid())
+        {
+
+          // Récupération du manager d'entité de Doctrine
+          $manager = $this->getDoctrine()->getManager();
+          // Préparation de la requête SQL
+          $manager->persist($product);
+          // Exécution de la requête SQL (INSERT INTO ...)
+          $manager->flush();
+
+
+          // Ajout d'un message Flash
+            $this->addFlash('succes', 'Le produit a bien été ajouté');
+
+          // Redirection
+            return $this->redirectToRoute('app_produit_liste');
+
+        }
+
+
+
+
+        //dd($product);
+        return $this->render('product/create.html.twig', [
+            'formProduct' => $formProduct ->createView()
+        ]);
+
+
+    }
 
 
 

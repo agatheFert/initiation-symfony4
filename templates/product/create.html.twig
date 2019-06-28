@@ -5,14 +5,11 @@
 {% endblock %}
 
 {% block body %}
-          <h1>Formulaire</h1>
-    <form method="POST">
-
-        <input type="text" name="etoile" >
-        <input type="submit">
-
-
-    </form>
+          <h1>Formulaire de création d'un produit</h1>
+         {{ form_start(formProduct) }}
+           {{ form_widget(formProduct) }}
+          {#<input type="submit">#}
+         {{ form_end(formProduct) }}
 
 {% endblock %}
 

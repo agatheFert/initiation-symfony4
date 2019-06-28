@@ -33,6 +33,20 @@ class Category
         $this->products = new ArrayCollection();
     }
 
+    /*
+     * On définit cette méthode pour afficher
+     *
+     *
+     */
+    public function __toString():string
+    {
+
+        return $this->name;
+
+    }
+
+
+
     public function getId(): ?int
     {
         return $this->id;
